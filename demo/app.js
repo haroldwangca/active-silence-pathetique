@@ -1,5 +1,9 @@
 async function readCsv(path) {
-  const text = await fetch(path).then((response) => response.text());
+  const response = await fetch(path);
+  if (!response.ok) {
+    throw new Error(`Could not load ${path} (${response.status})`);
+  }
+  const text = await response.text();
   const [headerLine, ...lines] = text.trim().split(/\r?\n/);
   const headers = headerLine.split(",");
   return lines.map((line) => {
@@ -21,13 +25,12 @@ async function loadAudioPaths() {
 }
 
 async function main() {
+  const recordingSelect = document.getElementById("recording");
+  const output = document.getElementById("output");
   const events = await readCsv("../data/events.csv");
   const audioPaths = await loadAudioPaths();
   const sourceEvents = events.filter((row) => row.condition === "source");
   const recordings = [...new Set(sourceEvents.map((row) => row.recording_id))];
-  const recordingSelect = document.getElementById("recording");
-  const pauseSelect = document.getElementById("pause");
-  const output = document.getElementById("output");
 
   recordings.forEach((recordingId) => {
     const option = document.createElement("option");
@@ -51,4 +54,15 @@ async function main() {
   });
 }
 
-main();
+main().catch((error) => {
+  const output = document.getElementById("output");
+  output.textContent = [
+    "The demo could not load its CSV files.",
+    "",
+    "Serve over HTTP: run python3 -m http.server 8000 from the repo root, then open http://localhost:8000/demo/",
+    "",
+    "GitHub does not execute this HTML directly; the demo runs locally (or later via GitHub Pages).",
+    "",
+    `Technical detail: ${error.message}`
+  ].join("\n");
+});
