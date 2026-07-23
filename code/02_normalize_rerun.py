@@ -77,7 +77,7 @@ def main() -> None:
     manifest = BASE.load_manifest(args.manifest)
     rows = list(source_rows)
 
-    with tempfile.TemporaryDirectory(prefix="holding-breath-peaknorm-") as tmp_dir_str:
+    with tempfile.TemporaryDirectory(prefix="active-silence-peaknorm-") as tmp_dir_str:
         tmp_dir = Path(tmp_dir_str)
         for item in manifest:
             audio_path = BASE.resolve_audio_path(args.audio_dir, item["recording_id"], item["pianist"])

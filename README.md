@@ -1,21 +1,21 @@
-# Holding Breath in Beethoven
+# Active Silence in Beethoven
 
-This repository packages the reproducibility materials for **"Holding Breath in Beethoven: Active-Silence Strategies in the Grave of the Pathetique,"** prepared for submission to **ISMIR LBD 2026** as a **non-archival** late-breaking demo paper. It contains code, extracted timing features, derived figures, and a documented source manifest for the July 21, 2026 verified study set.
+This repository contains the materials behind **"Active Silence in Beethoven: Pause Strategies in the Grave of the Pathetique,"** a late-breaking demo paper prepared for **ISMIR LBD 2026**. It includes the analysis code, extracted timing tables, figures, and the source manifest for the study set verified on July 21, 2026.
 
-The shipped CSV feature tables are the canonical July 21, 2026 verified outputs used for the draft. Re-running the detector on newly re-obtained audio or a different `ffmpeg` build can shift a small number of pause boundaries.
+The CSV files in `data/` are the verified outputs used in the current draft. If you rerun the detector on newly downloaded audio, or under a different `ffmpeg` build, a few pause boundaries may land slightly differently.
 
 ## What Is Not Here
 
-No audio files are included. The ATEPP-linked WAVs used for the study are copyrighted commercial recordings, so this package ships only code, extracted features, figures, and provenance metadata. To re-obtain the audio, use `data/manifest.csv` and the documented ATEPP/YouTube source links, then place your local files in a separate audio directory.
+No audio files are included. The WAVs linked through ATEPP are copyrighted commercial recordings, so this repository only includes code, extracted features, figures, and provenance metadata. If you want to rebuild the results, use `data/manifest.csv` together with the documented ATEPP and YouTube links, then place the audio in your own local directory.
 
 ## Reproduce In Three Commands
 
-Prerequisite: install `ffmpeg` and place your local audio in one directory. The scripts try filenames such as `AB.wav`, `DB.wav`, or the pianist name, for extensions `wav`, `mp3`, `flac`, `m4a`, and `aiff`.
+Before running anything, install `ffmpeg` and put the local audio files in one directory. The scripts look for filenames such as `AB.wav`, `DB.wav`, or the pianist name, across `wav`, `mp3`, `flac`, `m4a`, and `aiff`.
 
 ```bash
 python3 -m pip install -r requirements.txt
-export HB_AUDIO_DIR="/absolute/path/to/local/audio"
-python3 code/01_detect.py --audio-dir "$HB_AUDIO_DIR" && python3 code/02_normalize_rerun.py --audio-dir "$HB_AUDIO_DIR" && python3 code/03_analysis.py && python3 code/04_figures.py
+export AS_AUDIO_DIR="/absolute/path/to/local/audio"
+python3 code/01_detect.py --audio-dir "$AS_AUDIO_DIR" && python3 code/02_normalize_rerun.py --audio-dir "$AS_AUDIO_DIR" && python3 code/03_analysis.py && python3 code/04_figures.py
 ```
 
 ## Data Dictionary: `data/events.csv`
@@ -38,6 +38,6 @@ python3 code/01_detect.py --audio-dir "$HB_AUDIO_DIR" && python3 code/02_normali
 
 ## How To Cite
 
-Harold Wang, *Holding Breath in Beethoven: Active-Silence Strategies in the Grave of the Pathetique*, prepared for submission to ISMIR LBD 2026.
+Harold Wang, *Active Silence in Beethoven: Pause Strategies in the Grave of the Pathetique*, prepared for submission to ISMIR LBD 2026.
 
 Contact: haroldw101313@wpga.ca

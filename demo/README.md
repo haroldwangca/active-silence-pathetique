@@ -1,6 +1,6 @@
 # Demo Stub
 
-This folder contains a local-only stub for a future "Breath Aligner" demo. It does not include audio, and it should not be uploaded with copyrighted recordings.
+This folder contains a local-only stub for a future "Pause Alignment" demo. It does not include audio, and it should not be uploaded with copyrighted recordings.
 
 To use it locally:
 
