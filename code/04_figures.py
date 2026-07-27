@@ -9,7 +9,6 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
 EVENTS = ["P1", "P2", "P3", "P4"]
@@ -66,6 +65,10 @@ def y_map(value: float, top: float, height: float, max_y: float) -> float:
     return top + height - (value / max_y) * height
 
 
+def y_map_pdf(value: float, bottom: float, height: float, max_y: float) -> float:
+    return bottom + (value / max_y) * height
+
+
 def dash_segments(points: list[tuple[float, float]], dash: float = 8.0, gap: float = 5.0) -> list[tuple[tuple[float, float], tuple[float, float]]]:
     segments = []
     for (x1, y1), (x2, y2) in zip(points, points[1:]):
@@ -88,8 +91,8 @@ def dash_segments(points: list[tuple[float, float]], dash: float = 8.0, gap: flo
 
 
 def render_png(out_path: Path, profiles: list[dict[str, object]]) -> None:
-    width, height = 980, 620
-    left, top = 120, 90
+    width, height = 940, 550
+    left, top = 120, 50
     plot_w, plot_h = 700, 430
     img = Image.new("RGB", (width, height), "white")
     draw = ImageDraw.Draw(img)
@@ -136,8 +139,6 @@ def render_png(out_path: Path, profiles: list[dict[str, object]]) -> None:
     for x, y in med_pts:
         draw.ellipse((x - 4, y - 4, x + 4, y + 4), fill=BLACK)
 
-    draw.text((left, 24), "Figure 1. Active-silence trajectories across the four Grave pauses", fill=BLACK, font=font)
-    draw.text((left, 44), "Solid lines = negative covariance, dashed lines = positive covariance.", fill=BLACK, font=font)
     legend_x = left + plot_w + 26
     legend_y = top + 40
     legend = [
@@ -168,20 +169,18 @@ def set_stroke_pdf(pdf: canvas.Canvas, rgb: tuple[int, int, int], width: float =
 
 
 def render_pdf(out_path: Path, profiles: list[dict[str, object]]) -> None:
-    pdf = canvas.Canvas(str(out_path), pagesize=letter)
-    width, height = letter
-    left, top = 90, height - 120
-    plot_w, plot_h = 420, 300
+    width, height = 520, 340
+    pdf = canvas.Canvas(str(out_path), pagesize=(width, height))
+    left, top = 62, height - 22
+    plot_w, plot_h = 350, 270
     max_y = max(max(profile["dl"]) for profile in profiles)
     x_positions = [left + i * (plot_w / (len(EVENTS) - 1)) for i in range(len(EVENTS))]
 
-    pdf.setFont("Helvetica", 10)
-    pdf.drawString(left, height - 48, "Figure 1. Active-silence trajectories across the four Grave pauses")
-    pdf.drawString(left, height - 62, "Solid lines = negative covariance, dashed lines = positive covariance.")
+    pdf.setFont("Helvetica", 8)
 
     for i in range(5):
         y_val = float(i)
-        y = y_map(y_val, top - plot_h, plot_h, max_y)
+        y = y_map_pdf(y_val, top - plot_h, plot_h, max_y)
         set_stroke_pdf(pdf, GRID_COLOR, 0.6)
         pdf.line(left, y, left + plot_w, y)
         pdf.setFillColor(colors.black)
@@ -198,7 +197,7 @@ def render_pdf(out_path: Path, profiles: list[dict[str, object]]) -> None:
         pdf.drawCentredString(x, top - plot_h - 14, event)
 
     for profile in profiles:
-        pts = [(x_positions[i], y_map(profile["dl"][i], top - plot_h, plot_h, max_y)) for i in range(len(EVENTS))]
+        pts = [(x_positions[i], y_map_pdf(profile["dl"][i], top - plot_h, plot_h, max_y)) for i in range(len(EVENTS))]
         if profile["sign"] == "negative":
             set_stroke_pdf(pdf, NEG_COLOR, 1.2)
         else:
@@ -214,7 +213,7 @@ def render_pdf(out_path: Path, profiles: list[dict[str, object]]) -> None:
         if not group:
             continue
         med = [median([vals[i] for vals in group]) for i in range(len(EVENTS))]
-        pts = [(x_positions[i], y_map(med[i], top - plot_h, plot_h, max_y)) for i in range(len(EVENTS))]
+        pts = [(x_positions[i], y_map_pdf(med[i], top - plot_h, plot_h, max_y)) for i in range(len(EVENTS))]
         set_stroke_pdf(pdf, color, 2.4, dash=dash)
         path = pdf.beginPath()
         path.moveTo(*pts[0])
@@ -223,7 +222,7 @@ def render_pdf(out_path: Path, profiles: list[dict[str, object]]) -> None:
         pdf.drawPath(path)
 
     all_med = [median([profile["dl"][i] for profile in profiles]) for i in range(len(EVENTS))]
-    med_pts = [(x_positions[i], y_map(all_med[i], top - plot_h, plot_h, max_y)) for i in range(len(EVENTS))]
+    med_pts = [(x_positions[i], y_map_pdf(all_med[i], top - plot_h, plot_h, max_y)) for i in range(len(EVENTS))]
     set_stroke_pdf(pdf, BLACK, 2.4)
     path = pdf.beginPath()
     path.moveTo(*med_pts[0])
@@ -234,8 +233,8 @@ def render_pdf(out_path: Path, profiles: list[dict[str, object]]) -> None:
     for x, y in med_pts:
         pdf.circle(x, y, 2.5, stroke=0, fill=1)
 
-    legend_x = left + plot_w + 24
-    legend_y = top - 70
+    legend_x = left + plot_w + 18
+    legend_y = top - 55
     legend_items = [
         ("neg. traj.", NEG_COLOR, None, 1.2),
         ("neg. med.", NEG_COLOR, None, 2.4),
