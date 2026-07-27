@@ -1,0 +1,6 @@
+test,statistic,df,p_value,note
+kendall_all_four,W=0.479585; chi2=24.458824,3,0.000020,"P1,P2,P3,P4"
+kendall_without_p4,W=0.166090; chi2=5.647059,2,0.059396,"P1,P2,P3"
+kendall_p2_p3_only,W=0.031142; chi2=0.529412,1,0.466854,"P2,P3"
+binomial_p2_vs_p3_modal_peak,P2=10; P3=7,,0.629059,"two-sided exact binomial, p0=0.5"
+wilcoxon_p2_minus_p3,z=-0.449712,,0.652918,exact signed-rank p=0.677704

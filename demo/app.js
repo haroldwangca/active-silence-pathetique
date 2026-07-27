@@ -24,10 +24,50 @@ async function loadAudioPaths() {
   }
 }
 
+function drawTimeline(boundary) {
+  const canvas = document.getElementById("timeline");
+  const context = canvas.getContext("2d");
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.font = "13px Georgia";
+  context.fillStyle = "#181512";
+  if (!boundary || typeof boundary === "string") {
+    context.fillText("Boundary metadata unavailable for this selection.", 24, 62);
+    return;
+  }
+  const eventStart = Number(boundary.event_start);
+  const silenceStart = Number(boundary.silence_start);
+  const silenceEnd = Number(boundary.silence_end);
+  const total = Math.max(silenceEnd - eventStart, 0.001);
+  const left = 80;
+  const width = 610;
+  const y = 48;
+  const xSilence = left + ((silenceStart - eventStart) / total) * width;
+  context.strokeStyle = "#222";
+  context.lineWidth = 1;
+  context.strokeRect(left, y, width, 22);
+  context.fillStyle = "#587ca3";
+  context.fillRect(left, y, Math.max(0, xSilence - left), 22);
+  context.fillStyle = "#b95d4f";
+  context.fillRect(xSilence, y, Math.max(0, left + width - xSilence), 22);
+  context.fillStyle = "#181512";
+  context.fillText(`event start ${eventStart.toFixed(3)}s`, left, 30);
+  context.fillText(`silence start ${silenceStart.toFixed(3)}s`, xSilence - 46, 88);
+  context.fillText(`event end ${silenceEnd.toFixed(3)}s`, left + width - 90, 30);
+  context.fillStyle = "#587ca3";
+  context.fillText("sounding d_s", 24, 108);
+  context.fillStyle = "#b95d4f";
+  context.fillText("low-energy d_l", 150, 108);
+}
+
 async function main() {
   const recordingSelect = document.getElementById("recording");
+  const pauseSelect = document.getElementById("pause");
+  const thresholdSelect = document.getElementById("threshold");
+  const audio = document.getElementById("audio");
   const output = document.getElementById("output");
   const events = await readCsv("../data/events.csv");
+  const boundaries = await readCsv("../data/pause_boundaries_source.csv").catch(() => []);
+  const thresholdRows = await readCsv("../data/threshold_sweep.csv").catch(() => []);
   const audioPaths = await loadAudioPaths();
   const sourceEvents = events.filter((row) => row.condition === "source");
   const recordings = [...new Set(sourceEvents.map((row) => row.recording_id))];
@@ -39,14 +79,38 @@ async function main() {
     recordingSelect.appendChild(option);
   });
 
+  thresholdRows.forEach((row) => {
+    const option = document.createElement("option");
+    option.value = row.threshold_setting;
+    option.textContent = row.threshold_setting;
+    thresholdSelect.appendChild(option);
+  });
+
   document.getElementById("show").addEventListener("click", () => {
     const selected = sourceEvents.find(
       (row) => row.recording_id === recordingSelect.value && row.pause === pauseSelect.value
     );
+    const boundary = boundaries.find(
+      (row) => row.recording_id === recordingSelect.value && row.pause === pauseSelect.value
+    );
+    const threshold = thresholdRows.find((row) => row.threshold_setting === thresholdSelect.value);
+    const audioPath = audioPaths[recordingSelect.value] ?? "";
+    if (audioPath) {
+      const start = boundary?.event_start ?? "";
+      const end = boundary?.event_end ?? "";
+      audio.src = start && end ? `${audioPath}#t=${start},${end}` : audioPath;
+      audio.hidden = false;
+    } else {
+      audio.removeAttribute("src");
+      audio.hidden = true;
+    }
+    drawTimeline(boundary);
     output.textContent = JSON.stringify(
       {
         event: selected ?? null,
-        local_audio_path: audioPaths[recordingSelect.value] ?? "not configured"
+        detector_boundaries: boundary ?? "run code/05_boundaries.py with local audio to regenerate",
+        threshold_summary: threshold ?? "aggregate threshold summary not available",
+        local_audio_path: audioPath || "not configured"
       },
       null,
       2

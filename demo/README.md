@@ -1,6 +1,6 @@
-# Demo Stub
+# Local Demo Viewer
 
-This folder contains a local-only stub for a future "Pause Alignment" demo. It does not include audio, and it should not be uploaded with copyrighted recordings.
+This folder contains a local-only viewer for the extracted pause events. It does not include audio, and it should not be uploaded with copyrighted recordings.
 
 To use it locally:
 
@@ -9,6 +9,6 @@ To use it locally:
 3. From the repository root, run `python3 -m http.server 8000`.
 4. Open `http://localhost:8000/demo/`.
 
-The stub reads derived metadata from `../data/events.csv` and `../data/manifest.csv`. Audio remains user-supplied and outside version control.
+The viewer reads derived metadata from `../data/events.csv`, detector-boundary metadata from `../data/pause_boundaries_source.csv`, and aggregate detector-sensitivity metadata from `../data/threshold_sweep.csv`. Audio remains user-supplied and outside version control. If `audio_paths.json` is configured, the browser audio element is pointed to the selected event span using a media-fragment URL.
 
 GitHub does not run this HTML directly on the repository page. The demo is local-only unless it is later deployed through GitHub Pages or another static host.

@@ -104,6 +104,8 @@ def render_png(out_path: Path, profiles: list[dict[str, object]]) -> None:
         draw.text((left - 32, y - 6), f"{y_val:.1f}", fill=BLACK, font=font)
     draw.line((left, top, left, top + plot_h), fill=BLACK, width=1)
     draw.line((left, top + plot_h, left + plot_w, top + plot_h), fill=BLACK, width=1)
+    draw.text((left + plot_w // 2 - 18, top + plot_h + 34), "Pause", fill=BLACK, font=font)
+    draw.text((20, top + plot_h // 2), "d_l (s)", fill=BLACK, font=font)
     for x, event in zip(x_positions, EVENTS):
         draw.line((x, top, x, top + plot_h), fill=GRID_COLOR, width=1)
         draw.text((x - 10, top + plot_h + 12), event, fill=BLACK, font=font)
@@ -136,6 +138,23 @@ def render_png(out_path: Path, profiles: list[dict[str, object]]) -> None:
 
     draw.text((left, 24), "Figure 1. Active-silence trajectories across the four Grave pauses", fill=BLACK, font=font)
     draw.text((left, 44), "Solid lines = negative covariance, dashed lines = positive covariance.", fill=BLACK, font=font)
+    legend_x = left + plot_w + 26
+    legend_y = top + 40
+    legend = [
+        ("neg. traj.", NEG_COLOR, "solid", 2),
+        ("neg. med.", NEG_COLOR, "solid", 4),
+        ("pos. traj.", POS_COLOR, "dash", 2),
+        ("pos. med.", POS_COLOR, "dash", 4),
+        ("all med.", BLACK, "solid", 4),
+    ]
+    for index, (label, color, style, line_width) in enumerate(legend):
+        y = legend_y + index * 24
+        if style == "dash":
+            for segment in dash_segments([(legend_x, y), (legend_x + 36, y)], dash=8, gap=5):
+                draw.line((*segment[0], *segment[1]), fill=color, width=line_width)
+        else:
+            draw.line((legend_x, y, legend_x + 36, y), fill=color, width=line_width)
+        draw.text((legend_x + 44, y - 6), label, fill=BLACK, font=font)
     img.save(out_path)
 
 
@@ -170,6 +189,8 @@ def render_pdf(out_path: Path, profiles: list[dict[str, object]]) -> None:
     set_stroke_pdf(pdf, BLACK, 1.0)
     pdf.line(left, top - plot_h, left, top)
     pdf.line(left, top - plot_h, left + plot_w, top - plot_h)
+    pdf.drawCentredString(left + plot_w / 2, top - plot_h - 32, "Pause")
+    pdf.drawString(left - 52, top - plot_h / 2, "d_l (s)")
     for x, event in zip(x_positions, EVENTS):
         set_stroke_pdf(pdf, GRID_COLOR, 0.6)
         pdf.line(x, top - plot_h, x, top)
@@ -212,6 +233,23 @@ def render_pdf(out_path: Path, profiles: list[dict[str, object]]) -> None:
     pdf.setFillColor(colors.black)
     for x, y in med_pts:
         pdf.circle(x, y, 2.5, stroke=0, fill=1)
+
+    legend_x = left + plot_w + 24
+    legend_y = top - 70
+    legend_items = [
+        ("neg. traj.", NEG_COLOR, None, 1.2),
+        ("neg. med.", NEG_COLOR, None, 2.4),
+        ("pos. traj.", POS_COLOR, (5, 3), 1.2),
+        ("pos. med.", POS_COLOR, (7, 4), 2.4),
+        ("all med.", BLACK, None, 2.4),
+    ]
+    pdf.setFont("Helvetica", 8)
+    for index, (label, color, dash, line_width) in enumerate(legend_items):
+        y = legend_y - index * 16
+        set_stroke_pdf(pdf, color, line_width, dash=dash)
+        pdf.line(legend_x, y, legend_x + 28, y)
+        pdf.setFillColor(colors.black)
+        pdf.drawString(legend_x + 34, y - 3, label)
 
     pdf.save()
 

@@ -1,0 +1,165 @@
+{
+  "source": {
+    "table1": [
+      {
+        "pause": "P1",
+        "mean_d_s": 3.071,
+        "mean_d_l": 0.975,
+        "mean_T": 4.046,
+        "median_d_l": 0.978,
+        "peak_n": 0,
+        "median_rank": 2.0
+      },
+      {
+        "pause": "P2",
+        "mean_d_s": 0.743,
+        "mean_d_l": 1.363,
+        "mean_T": 2.106,
+        "median_d_l": 1.507,
+        "peak_n": 10,
+        "median_rank": 1.0
+      },
+      {
+        "pause": "P3",
+        "mean_d_s": 1.631,
+        "mean_d_l": 1.801,
+        "mean_T": 3.432,
+        "median_d_l": 1.561,
+        "peak_n": 7,
+        "median_rank": 2.0
+      },
+      {
+        "pause": "P4",
+        "mean_d_s": 2.201,
+        "mean_d_l": 0.358,
+        "mean_T": 2.559,
+        "median_d_l": 0.265,
+        "peak_n": 0,
+        "median_rank": 4.0
+      }
+    ],
+    "kendalls_w": 0.4795847750865052,
+    "peak_counts": {
+      "P3": 7,
+      "P2": 10
+    },
+    "covariance_signs": {
+      "Alfred Brendel": "additive",
+      "Claudio Arrau": "compensating",
+      "Daniel Barenboim": "additive",
+      "Edwin Fischer": "compensating",
+      "Emil Gilels": "additive",
+      "Friedrich Gulda": "additive",
+      "Glenn Gould": "compensating",
+      "Lazar Berman": "additive",
+      "Maurizio Pollini": "compensating",
+      "Radu Lupu": "additive",
+      "Sviatoslav Richter": "additive",
+      "Van Cliburn": "compensating",
+      "Vladimir Ashkenazy": "compensating",
+      "Vladimir Horowitz": "compensating",
+      "Walter Gieseking": "compensating",
+      "Wilhelm Kempff": "compensating",
+      "Zolt\u00e1n Kocsis": "additive"
+    },
+    "strategy_counts": {
+      "additive": 8,
+      "compensating": 9
+    }
+  },
+  "peaknorm": {
+    "table1": [
+      {
+        "pause": "P1",
+        "mean_d_s": 4.438,
+        "mean_d_l": 0.72,
+        "mean_T": 5.158,
+        "median_d_l": 0.799,
+        "peak_n": 0,
+        "median_rank": 3.0
+      },
+      {
+        "pause": "P2",
+        "mean_d_s": 1.356,
+        "mean_d_l": 1.297,
+        "mean_T": 2.653,
+        "median_d_l": 1.407,
+        "peak_n": 8,
+        "median_rank": 2.0
+      },
+      {
+        "pause": "P3",
+        "mean_d_s": 1.477,
+        "mean_d_l": 1.741,
+        "mean_T": 3.218,
+        "median_d_l": 1.357,
+        "peak_n": 9,
+        "median_rank": 1.0
+      },
+      {
+        "pause": "P4",
+        "mean_d_s": 2.042,
+        "mean_d_l": 0.346,
+        "mean_T": 2.388,
+        "median_d_l": 0.223,
+        "peak_n": 0,
+        "median_rank": 4.0
+      }
+    ],
+    "kendalls_w": 0.4560553633217993,
+    "peak_counts": {
+      "P3": 9,
+      "P2": 8
+    },
+    "covariance_signs": {
+      "Alfred Brendel": "additive",
+      "Claudio Arrau": "compensating",
+      "Daniel Barenboim": "compensating",
+      "Edwin Fischer": "compensating",
+      "Emil Gilels": "additive",
+      "Friedrich Gulda": "additive",
+      "Glenn Gould": "compensating",
+      "Lazar Berman": "compensating",
+      "Maurizio Pollini": "compensating",
+      "Radu Lupu": "compensating",
+      "Sviatoslav Richter": "compensating",
+      "Van Cliburn": "additive",
+      "Vladimir Ashkenazy": "compensating",
+      "Vladimir Horowitz": "compensating",
+      "Walter Gieseking": "additive",
+      "Wilhelm Kempff": "compensating",
+      "Zolt\u00e1n Kocsis": "additive"
+    },
+    "strategy_counts": {
+      "additive": 6,
+      "compensating": 11
+    }
+  },
+  "covariance_flip_count": 6,
+  "covariance_flips": {
+    "Daniel Barenboim": {
+      "source": "additive",
+      "peaknorm": "compensating"
+    },
+    "Lazar Berman": {
+      "source": "additive",
+      "peaknorm": "compensating"
+    },
+    "Radu Lupu": {
+      "source": "additive",
+      "peaknorm": "compensating"
+    },
+    "Sviatoslav Richter": {
+      "source": "additive",
+      "peaknorm": "compensating"
+    },
+    "Van Cliburn": {
+      "source": "compensating",
+      "peaknorm": "additive"
+    },
+    "Walter Gieseking": {
+      "source": "compensating",
+      "peaknorm": "additive"
+    }
+  }
+}
