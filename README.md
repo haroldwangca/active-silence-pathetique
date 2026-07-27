@@ -1,6 +1,6 @@
 # Active Silence in Beethoven: Low-Energy Pause Strategies
 
-This repository contains the materials behind **"Active Silence in Beethoven: Pause Strategies in the Grave of the Pathetique,"** a late-breaking demo paper prepared for **ISMIR LBD 2026**. It includes the analysis code, extracted timing tables, figures, and the source manifest for the study set verified on July 21, 2026.
+This repository contains the materials behind **"Active Silence in Beethoven: Low-Energy Pause Strategies in the Grave of the Pathetique,"** a late-breaking demo paper prepared for **ISMIR LBD 2026**. It includes the analysis code, extracted timing tables, figures, and the source manifest for the study set verified on July 21, 2026.
 
 The CSV files in `data/` are the verified outputs used in the current draft. If you rerun the detector on newly downloaded audio, or under a different `ffmpeg` build, a few pause boundaries may land slightly differently.
 
@@ -60,6 +60,6 @@ python3 code/01_detect.py --audio-dir "$AS_AUDIO_DIR" && python3 code/02_normali
 
 ## How To Cite
 
-Harold Wang, *Active Silence in Beethoven: Pause Strategies in the Grave of the Pathetique*, prepared for submission to ISMIR LBD 2026.
+Harold Wang, *Active Silence in Beethoven: Low-Energy Pause Strategies in the Grave of the Pathetique*, prepared for submission to ISMIR LBD 2026.
 
 Contact: haroldw101313@wpga.ca
