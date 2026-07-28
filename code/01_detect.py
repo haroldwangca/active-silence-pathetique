@@ -26,7 +26,11 @@ class SilenceInterval:
 def load_manifest(path: Path) -> list[dict[str, str]]:
     with path.open("r", newline="", encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
-    return [row for row in rows if "Historical extension only" not in row["notes"]]
+    return [
+        row
+        for row in rows
+        if "Historical extension only" not in row["notes"] and "Deduplicated:" not in row["notes"]
+    ]
 
 
 def detect_silences(audio_path: Path, noise_db: int = -35, min_duration: float = 0.10) -> list[SilenceInterval]:

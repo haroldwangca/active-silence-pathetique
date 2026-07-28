@@ -92,10 +92,21 @@ def draw_panel(audio_path: Path, row: dict[str, str], out_path: Path) -> None:
         (silence_start, "silence start", (180, 70, 45)),
         (silence_end, "silence end", (45, 130, 75)),
     ]
+    placed = []
     for time_seconds, label, color in markers:
         x = x_at(time_seconds)
+        width = draw.textlength(label, font=font)
+        label_y = top + 4
+        while any(
+            x < prev_x + prev_width + 6
+            and prev_x < x + width + 6
+            and abs(label_y - prev_y) < 13
+            for prev_x, prev_width, prev_y in placed
+        ):
+            label_y += 13
+        placed.append((x, width, label_y))
         draw.line((x, top, x, top + plot_h), fill=color, width=3)
-        draw.text((x + 4, top + 4), label, fill=color, font=font)
+        draw.text((x + 4, label_y), label, fill=color, font=font)
     draw.text((left, height - 26), f"time window {start:.2f}-{end:.2f}s; boundary metadata from {row['threshold_setting']}", fill=(0, 0, 0), font=font)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     image.save(out_path)

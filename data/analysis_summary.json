@@ -3,51 +3,50 @@
     "table1": [
       {
         "pause": "P1",
-        "mean_d_s": 3.071,
-        "mean_d_l": 0.975,
-        "mean_T": 4.046,
-        "median_d_l": 0.978,
+        "mean_d_s": 2.846,
+        "mean_d_l": 0.973,
+        "mean_T": 3.819,
+        "median_d_l": 0.972,
         "peak_n": 0,
         "median_rank": 2.0
       },
       {
         "pause": "P2",
-        "mean_d_s": 0.743,
-        "mean_d_l": 1.363,
-        "mean_T": 2.106,
-        "median_d_l": 1.507,
-        "peak_n": 10,
+        "mean_d_s": 0.738,
+        "mean_d_l": 1.354,
+        "mean_T": 2.092,
+        "median_d_l": 1.466,
+        "peak_n": 9,
         "median_rank": 1.0
       },
       {
         "pause": "P3",
-        "mean_d_s": 1.631,
-        "mean_d_l": 1.801,
-        "mean_T": 3.432,
-        "median_d_l": 1.561,
+        "mean_d_s": 1.599,
+        "mean_d_l": 1.847,
+        "mean_T": 3.446,
+        "median_d_l": 1.602,
         "peak_n": 7,
         "median_rank": 2.0
       },
       {
         "pause": "P4",
-        "mean_d_s": 2.201,
-        "mean_d_l": 0.358,
-        "mean_T": 2.559,
-        "median_d_l": 0.265,
+        "mean_d_s": 2.13,
+        "mean_d_l": 0.363,
+        "mean_T": 2.493,
+        "median_d_l": 0.254,
         "peak_n": 0,
         "median_rank": 4.0
       }
     ],
-    "kendalls_w": 0.4795847750865052,
+    "kendalls_w": 0.4609375,
     "peak_counts": {
       "P3": 7,
-      "P2": 10
+      "P2": 9
     },
     "covariance_signs": {
       "Alfred Brendel": "additive",
       "Claudio Arrau": "compensating",
       "Daniel Barenboim": "additive",
-      "Edwin Fischer": "compensating",
       "Emil Gilels": "additive",
       "Friedrich Gulda": "additive",
       "Glenn Gould": "compensating",
@@ -64,52 +63,52 @@
     },
     "strategy_counts": {
       "additive": 8,
-      "compensating": 9
+      "compensating": 8
     }
   },
   "peaknorm": {
     "table1": [
       {
         "pause": "P1",
-        "mean_d_s": 4.438,
-        "mean_d_l": 0.72,
-        "mean_T": 5.158,
-        "median_d_l": 0.799,
+        "mean_d_s": 4.291,
+        "mean_d_l": 0.711,
+        "mean_T": 5.002,
+        "median_d_l": 0.673,
         "peak_n": 1,
         "median_rank": 3.0
       },
       {
         "pause": "P2",
-        "mean_d_s": 1.356,
-        "mean_d_l": 1.297,
-        "mean_T": 2.652,
-        "median_d_l": 1.407,
-        "peak_n": 7,
+        "mean_d_s": 1.383,
+        "mean_d_l": 1.29,
+        "mean_T": 2.672,
+        "median_d_l": 1.395,
+        "peak_n": 6,
         "median_rank": 2.0
       },
       {
         "pause": "P3",
-        "mean_d_s": 4.434,
-        "mean_d_l": 1.497,
-        "mean_T": 5.931,
-        "median_d_l": 1.336,
+        "mean_d_s": 4.569,
+        "mean_d_l": 1.533,
+        "mean_T": 6.102,
+        "median_d_l": 1.347,
         "peak_n": 8,
-        "median_rank": 2.0
+        "median_rank": 1.5
       },
       {
         "pause": "P4",
-        "mean_d_s": 2.092,
-        "mean_d_l": 0.574,
-        "mean_T": 2.667,
-        "median_d_l": 0.223,
+        "mean_d_s": 1.935,
+        "mean_d_l": 0.598,
+        "mean_T": 2.533,
+        "median_d_l": 0.228,
         "peak_n": 1,
         "median_rank": 4.0
       }
     ],
-    "kendalls_w": 0.3273356401384083,
+    "kendalls_w": 0.30625,
     "peak_counts": {
       "P3": 8,
-      "P2": 7,
+      "P2": 6,
       "P4": 1,
       "P1": 1
     },
@@ -117,7 +116,6 @@
       "Alfred Brendel": "additive",
       "Claudio Arrau": "compensating",
       "Daniel Barenboim": "compensating",
-      "Edwin Fischer": "compensating",
       "Emil Gilels": "additive",
       "Friedrich Gulda": "additive",
       "Glenn Gould": "compensating",
@@ -134,7 +132,7 @@
     },
     "strategy_counts": {
       "additive": 7,
-      "compensating": 10
+      "compensating": 9
     }
   },
   "covariance_flip_count": 5,

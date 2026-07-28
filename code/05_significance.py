@@ -116,6 +116,24 @@ def wilcoxon_p2_p3(by_pianist: dict[str, dict[str, float]]) -> dict[str, float]:
     }
 
 
+def paired_p2_minus_p3_effect(by_pianist: dict[str, dict[str, float]]) -> dict[str, float]:
+    diffs = [event_map["P2"] - event_map["P3"] for event_map in by_pianist.values()]
+    n = len(diffs)
+    mean_diff = sum(diffs) / n
+    sd = (sum((value - mean_diff) ** 2 for value in diffs) / (n - 1)) ** 0.5
+    se = sd / math.sqrt(n)
+    tcrit_975_by_df = {15: 2.131, 16: 2.120}
+    tcrit = tcrit_975_by_df.get(n - 1, 1.96)
+    return {
+        "n": n,
+        "mean_seconds": round(mean_diff, 3),
+        "sd": round(sd, 3),
+        "ci95_low": round(mean_diff - tcrit * se, 3),
+        "ci95_high": round(mean_diff + tcrit * se, 3),
+        "cohens_dz": round(mean_diff / sd, 3),
+    }
+
+
 def main() -> None:
     base = Path(__file__).resolve().parents[1]
     rows = [row for row in read_rows(base / "data/events.csv") if row["condition"] == "source"]
@@ -129,12 +147,13 @@ def main() -> None:
     results = {
         "peak_counts": dict(peak_counts),
         "modal_peak_binomial_p_two_sided_p2_vs_p3": two_sided_binomial_at_least_extreme(p2_p3_successes, p2_p3_trials),
+        "paired_p2_minus_p3_effect": paired_p2_minus_p3_effect(by_pianist),
         "wilcoxon_p2_minus_p3": wilcoxon_p2_p3(by_pianist),
         "kendall_all_four": kendall_test(by_pianist, EVENTS),
         "kendall_without_p4": kendall_test(by_pianist, ["P1", "P2", "P3"]),
         "kendall_p2_p3_only": kendall_test(by_pianist, ["P2", "P3"]),
         "interpretation": (
-            "P2 and P3 are statistically indistinguishable in the shipped source-condition data; "
+            "The shipped source-condition data cannot separate P2 and P3 reliably; "
             "the all-four Kendall W is driven mainly by P4 being shortest and P1 being long."
         ),
     }
@@ -172,6 +191,16 @@ def main() -> None:
                 "df": "",
                 "p_value": f"{wilcoxon['p_normal_approx']:.6f}",
                 "note": f"exact signed-rank p={wilcoxon['p_exact_signed_rank']:.6f}",
+            }
+        )
+        effect = results["paired_p2_minus_p3_effect"]
+        writer.writerow(
+            {
+                "test": "paired_p2_minus_p3_effect",
+                "statistic": f"mean={effect['mean_seconds']:.3f}s; sd={effect['sd']:.3f}; dz={effect['cohens_dz']:.3f}",
+                "df": effect["n"] - 1,
+                "p_value": "",
+                "note": f"95% CI [{effect['ci95_low']:.3f}, {effect['ci95_high']:.3f}] s",
             }
         )
     print(json.dumps(results, indent=2))
