@@ -2,6 +2,7 @@ test,statistic,df,p_value,note
 kendall_all_four,W=0.460938; chi2=22.125000,3,0.000061,"P1,P2,P3,P4"
 kendall_without_p4,W=0.144531; chi2=4.625000,2,0.099013,"P1,P2,P3"
 kendall_p2_p3_only,W=0.015625; chi2=0.250000,1,0.617075,"P2,P3"
+kendall_all_four_permutation,W=0.460938,,0.000015,200000 within-recording shuffles; seed=20260728
 binomial_p2_vs_p3_modal_peak,P2=9; P3=7,,0.803619,"two-sided exact binomial, p0=0.5"
 wilcoxon_p2_minus_p3,z=-0.620505,,0.534925,exact signed-rank p=0.561890
 paired_p2_minus_p3_effect,mean=-0.493s; sd=1.738; dz=-0.284,15,,"95% CI [-1.419, 0.433] s"

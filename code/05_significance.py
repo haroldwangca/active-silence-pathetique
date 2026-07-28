@@ -6,6 +6,7 @@ from __future__ import annotations
 import csv
 import json
 import math
+import random
 from collections import Counter, defaultdict
 from itertools import product
 from pathlib import Path
@@ -70,6 +71,29 @@ def kendall_test(by_pianist: dict[str, dict[str, float]], events: list[str]) -> 
         "chi_square": chi_square,
         "df": df,
         "p_value": chi_square_sf(chi_square, df),
+    }
+
+
+def kendall_permutation_p(
+    by_pianist: dict[str, dict[str, float]],
+    events: list[str],
+    n_shuffles: int = 200_000,
+    seed: int = 20260728,
+) -> dict[str, float]:
+    rank_rows = [average_ranks_desc([event_map[event] for event in events]) for event_map in by_pianist.values()]
+    observed = kendalls_w(rank_rows)
+    rng = random.Random(seed)
+    extreme = 0
+    for _ in range(n_shuffles):
+        shuffled_rows = [rng.sample(row, len(row)) for row in rank_rows]
+        if kendalls_w(shuffled_rows) >= observed - 1e-12:
+            extreme += 1
+    return {
+        "events": ",".join(events),
+        "observed_w": observed,
+        "n_shuffles": n_shuffles,
+        "seed": seed,
+        "p_value": extreme / n_shuffles,
     }
 
 
@@ -150,6 +174,7 @@ def main() -> None:
         "paired_p2_minus_p3_effect": paired_p2_minus_p3_effect(by_pianist),
         "wilcoxon_p2_minus_p3": wilcoxon_p2_p3(by_pianist),
         "kendall_all_four": kendall_test(by_pianist, EVENTS),
+        "kendall_all_four_permutation": kendall_permutation_p(by_pianist, EVENTS),
         "kendall_without_p4": kendall_test(by_pianist, ["P1", "P2", "P3"]),
         "kendall_p2_p3_only": kendall_test(by_pianist, ["P2", "P3"]),
         "interpretation": (
@@ -174,6 +199,16 @@ def main() -> None:
                     "note": row["events"],
                 }
             )
+        row = results["kendall_all_four_permutation"]
+        writer.writerow(
+            {
+                "test": "kendall_all_four_permutation",
+                "statistic": f"W={row['observed_w']:.6f}",
+                "df": "",
+                "p_value": f"{row['p_value']:.6f}",
+                "note": f"{row['n_shuffles']} within-recording shuffles; seed={row['seed']}",
+            }
+        )
         writer.writerow(
             {
                 "test": "binomial_p2_vs_p3_modal_peak",

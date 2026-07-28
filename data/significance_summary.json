@@ -27,6 +27,13 @@
     "df": 3,
     "p_value": 6.143884052793612e-05
   },
+  "kendall_all_four_permutation": {
+    "events": "P1,P2,P3,P4",
+    "observed_w": 0.4609375,
+    "n_shuffles": 200000,
+    "seed": 20260728,
+    "p_value": 1.5e-05
+  },
   "kendall_without_p4": {
     "events": "P1,P2,P3",
     "kendalls_w": 0.14453125,
