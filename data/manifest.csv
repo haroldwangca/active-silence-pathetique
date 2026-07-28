@@ -3,7 +3,7 @@ AB,Alfred Brendel,08008,https://www.youtube.com/watch?v=mlxF5I1MfbM,2026-07-21,c
 AS,Artur Schnabel,08010,https://www.youtube.com/watch?v=IBx8Xx1diT8,2026-07-21,Historical extension only; ATEPP quality flag = background noise; excluded from core statistics.
 CA,Claudio Arrau,07998,https://www.youtube.com/watch?v=lKVAHReNEd8,2026-07-21,core corpus
 DB,Daniel Barenboim,07994,https://www.youtube.com/watch?v=qKVSs8XZH00,2026-07-21,Core corpus; earliest still-accessible ATEPP-linked Barenboim entry substituted on 2026-07-21 for an unavailable source URL.
-EF,Edwin Fischer,08029,https://www.youtube.com/watch?v=4TKQrybzm2Q,2026-07-21,"Deduplicated: same performance as CA, confirmed by energy-envelope cross-correlation (r=0.978, lag=+0.095s) on 2026-07-28; excluded from core statistics."
+EF,Edwin Fischer,08029,https://www.youtube.com/watch?v=4TKQrybzm2Q,2026-07-21,"Deduplicated: same performance as CA, confirmed by energy-envelope normalized cross-correlation (score=0.978, lag=+0.095s) on 2026-07-28; excluded from core statistics."
 EG,Emil Gilels,07974,https://www.youtube.com/watch?v=V6x9R5H88L4,2026-07-21,core corpus
 FG,Friedrich Gulda,08014,https://www.youtube.com/watch?v=owplWRbGfpw,2026-07-21,core corpus
 GG,Glenn Gould,08000,https://www.youtube.com/watch?v=772tHS4WA9M,2026-07-21,core corpus

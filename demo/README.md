@@ -2,7 +2,7 @@
 
 This folder contains a local-only viewer for the extracted pause events. It does not include audio, and it should not be uploaded with copyrighted recordings.
 
-The viewer is meant to make one event inspectable quickly: choose a recording and pause, then inspect the derived `d_s`/`d_l` values, recovered detector boundaries, a compact boundary timeline, the corpus trajectory figure, a waveform-check panel for the current selection, the selected threshold-summary row, and optional playback if you have mapped the corresponding local audio file. It is not a hosted public audio demo because the source recordings are copyrighted.
+The viewer is meant to make one event inspectable quickly: choose a recording and pause, then inspect the derived `d_s`/`d_l` values, recovered detector boundaries, a compact boundary timeline, the corpus trajectory figure, a waveform-check panel for the current selection, the selected threshold-summary row, and optional playback if you have mapped the corresponding local audio file. Copyright restrictions keep the source recordings outside the hosted artifact.
 
 To use it locally:
 

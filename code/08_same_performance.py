@@ -67,11 +67,11 @@ def main() -> None:
         score = sum(x * y for x, y in pairs) / len(pairs)
         best = max(best, (score, lag))
 
-    correlation, lag = best
-    print(f"peak correlation r = {correlation:.3f} at lag {lag / sr:+.3f} s")
-    if correlation > 0.85:
+    score, lag = best
+    print(f"peak normalized cross-correlation = {score:.3f} at lag {lag / sr:+.3f} s")
+    if score > 0.85:
         print("SAME performance")
-    elif correlation < 0.5:
+    elif score < 0.5:
         print("DIFFERENT performances")
     else:
         print("inconclusive")

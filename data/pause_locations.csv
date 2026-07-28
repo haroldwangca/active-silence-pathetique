@@ -2,4 +2,4 @@ pause,nominal_grave_location,selection_rule,caveat
 P1,opening dotted-rhythm chord pause,first eligible early low-energy interval,order-selected within an absolute opening window; bar identity requires hand verification
 P2,answering rest after the opening gesture,second eligible early low-energy interval,order-selected within an absolute opening window; bar identity requires hand verification
 P3,late-Grave fragmentation before the final caesura,longest eligible low-energy interval in late-Grave window,by construction longest in its window and not comparable as a pooled-mean discovery
-P4,final caesura before attacca Allegro,latest substantial pre-Allegro pause followed by at least six seconds of sound,detector-floor cases make this label a cautionary boundary check rather than a strong musicological claim
+P4,final caesura before attacca Allegro,first pause beginning after 35 s followed by at least six seconds without another detected low-energy interval; fallback starts after 25 s,detector-floor cases make this label a cautionary boundary check rather than a strong musicological claim

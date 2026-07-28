@@ -93,6 +93,8 @@ def select_pause_events(silences: list[SilenceInterval], total_duration_sec: flo
                 break
     if p4 is None:
         late = [s for s in candidates if s.start >= 25]
+        if not late:
+            raise RuntimeError("Could not isolate the final Grave caesura")
         p4 = max(late, key=lambda s: (s.start, s.duration))
 
     def early_candidates(grave_end: float) -> list[SilenceInterval]:
