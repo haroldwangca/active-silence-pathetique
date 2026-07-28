@@ -22,6 +22,7 @@ def load_detect_module():
 
 
 detect_module = load_detect_module()
+build_boundary_rows = detect_module.build_boundary_rows
 detect_silences = detect_module.detect_silences
 load_manifest = detect_module.load_manifest
 resolve_audio_path = detect_module.resolve_audio_path
@@ -70,24 +71,7 @@ def main() -> None:
                 }
             )
             continue
-        silence_to_index = {id(silence): index for index, silence in enumerate(silences)}
-        for pause_id, silence in selected.items():
-            index = silence_to_index[id(silence)]
-            prev_end = silences[index - 1].end if index > 0 else 0.0
-            rows.append(
-                {
-                    "recording_id": item["recording_id"],
-                    "pianist": item["pianist"],
-                    "pause": pause_id,
-                    "event_start": f"{prev_end:.3f}",
-                    "silence_start": f"{silence.start:.3f}",
-                    "silence_end": f"{silence.end:.3f}",
-                    "event_end": f"{silence.end:.3f}",
-                    "d_s": f"{max(0.0, silence.start - prev_end):.3f}",
-                    "d_l": f"{silence.duration:.3f}",
-                    "threshold_setting": f"{args.noise_db}dB_{args.min_duration:.2f}s",
-                }
-            )
+        rows.extend(build_boundary_rows(item, silences, selected, f"{args.noise_db}dB_{args.min_duration:.2f}s"))
     rows.sort(key=lambda row: (row["recording_id"], row["pause"]))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", newline="", encoding="utf-8") as handle:

@@ -75,41 +75,43 @@
         "mean_d_l": 0.72,
         "mean_T": 5.158,
         "median_d_l": 0.799,
-        "peak_n": 0,
+        "peak_n": 1,
         "median_rank": 3.0
       },
       {
         "pause": "P2",
         "mean_d_s": 1.356,
         "mean_d_l": 1.297,
-        "mean_T": 2.653,
+        "mean_T": 2.652,
         "median_d_l": 1.407,
-        "peak_n": 8,
+        "peak_n": 7,
         "median_rank": 2.0
       },
       {
         "pause": "P3",
-        "mean_d_s": 1.477,
-        "mean_d_l": 1.741,
-        "mean_T": 3.218,
-        "median_d_l": 1.357,
-        "peak_n": 9,
-        "median_rank": 1.0
+        "mean_d_s": 4.434,
+        "mean_d_l": 1.497,
+        "mean_T": 5.931,
+        "median_d_l": 1.336,
+        "peak_n": 8,
+        "median_rank": 2.0
       },
       {
         "pause": "P4",
-        "mean_d_s": 2.042,
-        "mean_d_l": 0.346,
-        "mean_T": 2.388,
+        "mean_d_s": 2.092,
+        "mean_d_l": 0.574,
+        "mean_T": 2.667,
         "median_d_l": 0.223,
-        "peak_n": 0,
+        "peak_n": 1,
         "median_rank": 4.0
       }
     ],
-    "kendalls_w": 0.4560553633217993,
+    "kendalls_w": 0.3273356401384083,
     "peak_counts": {
-      "P3": 9,
-      "P2": 8
+      "P3": 8,
+      "P2": 7,
+      "P4": 1,
+      "P1": 1
     },
     "covariance_signs": {
       "Alfred Brendel": "additive",
@@ -119,7 +121,7 @@
       "Emil Gilels": "additive",
       "Friedrich Gulda": "additive",
       "Glenn Gould": "compensating",
-      "Lazar Berman": "compensating",
+      "Lazar Berman": "additive",
       "Maurizio Pollini": "compensating",
       "Radu Lupu": "compensating",
       "Sviatoslav Richter": "compensating",
@@ -131,17 +133,13 @@
       "Zolt\u00e1n Kocsis": "additive"
     },
     "strategy_counts": {
-      "additive": 6,
-      "compensating": 11
+      "additive": 7,
+      "compensating": 10
     }
   },
-  "covariance_flip_count": 6,
+  "covariance_flip_count": 5,
   "covariance_flips": {
     "Daniel Barenboim": {
-      "source": "additive",
-      "peaknorm": "compensating"
-    },
-    "Lazar Berman": {
       "source": "additive",
       "peaknorm": "compensating"
     },

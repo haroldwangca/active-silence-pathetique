@@ -142,7 +142,12 @@ def resolve_audio_path(audio_dir: Path, recording_id: str, pianist: str) -> Path
     raise FileNotFoundError(f"Could not find audio for {recording_id} / {pianist} in {audio_dir}")
 
 
-def build_rows(manifest_row: dict[str, str], silences: list[SilenceInterval], selected: dict[str, SilenceInterval], threshold_setting: str) -> list[dict[str, str]]:
+def build_boundary_rows(
+    manifest_row: dict[str, str],
+    silences: list[SilenceInterval],
+    selected: dict[str, SilenceInterval],
+    threshold_setting: str,
+) -> list[dict[str, str]]:
     silence_to_index = {id(s): idx for idx, s in enumerate(silences)}
     rows = []
     for event_id in EVENTS:
@@ -150,20 +155,53 @@ def build_rows(manifest_row: dict[str, str], silences: list[SilenceInterval], se
         idx = silence_to_index[id(silence)]
         prev_end = silences[idx - 1].end if idx > 0 else 0.0
         sound_duration = max(0.0, silence.start - prev_end)
-        event_span = sound_duration + silence.duration
         rows.append(
             {
                 "recording_id": manifest_row["recording_id"],
                 "pianist": manifest_row["pianist"],
                 "pause": event_id,
+                "event_start": f"{prev_end:.3f}",
+                "silence_start": f"{silence.start:.3f}",
+                "silence_end": f"{silence.end:.3f}",
+                "event_end": f"{silence.end:.3f}",
                 "d_s": f"{sound_duration:.3f}",
                 "d_l": f"{silence.duration:.3f}",
-                "T": f"{event_span:.3f}",
-                "condition": "source",
                 "threshold_setting": threshold_setting,
             }
         )
     return rows
+
+
+def event_rows_from_boundary_rows(boundary_rows: list[dict[str, str]], condition: str = "source") -> list[dict[str, str]]:
+    rows = []
+    for row in boundary_rows:
+        event_span = float(row["d_s"]) + float(row["d_l"])
+        rows.append(
+            {
+                "recording_id": row["recording_id"],
+                "pianist": row["pianist"],
+                "pause": row["pause"],
+                "d_s": row["d_s"],
+                "d_l": row["d_l"],
+                "T": f"{event_span:.3f}",
+                "condition": condition,
+                "threshold_setting": row["threshold_setting"],
+            }
+        )
+    return rows
+
+
+def build_rows(manifest_row: dict[str, str], silences: list[SilenceInterval], selected: dict[str, SilenceInterval], threshold_setting: str) -> list[dict[str, str]]:
+    """Build event rows through the boundary representation.
+
+    Boundary rows are the single source of truth for source-condition d_s/d_l.
+    Keeping this projection explicit prevents the demo and paper table from
+    measuring the same pause with two independent rulers.
+    """
+    return event_rows_from_boundary_rows(
+        build_boundary_rows(manifest_row, silences, selected, threshold_setting),
+        condition="source",
+    )
 
 
 def write_rows(path: Path, rows: list[dict[str, str]]) -> None:
@@ -179,37 +217,62 @@ def main() -> None:
     parser.add_argument("--audio-dir", required=True, type=Path)
     parser.add_argument("--manifest", default=Path("data/manifest.csv"), type=Path)
     parser.add_argument("--output", default=Path("data/events.csv"), type=Path)
+    parser.add_argument("--boundaries-output", default=Path("data/pause_boundaries_source.csv"), type=Path)
+    parser.add_argument("--failures-output", default=Path("data/pause_boundaries_failures.csv"), type=Path)
     parser.add_argument("--noise-db", default=-35, type=int)
     parser.add_argument("--min-duration", default=0.10, type=float)
     args = parser.parse_args()
 
     manifest = load_manifest(args.manifest)
     threshold_setting = f"{args.noise_db}dB_{args.min_duration:.2f}s"
-    rows: list[dict[str, str]] = []
+    event_rows: list[dict[str, str]] = []
+    boundary_rows: list[dict[str, str]] = []
+    failures: list[dict[str, str]] = []
     for item in manifest:
-        audio_path = resolve_audio_path(args.audio_dir, item["recording_id"], item["pianist"])
-        duration_probe = subprocess.run(
-            [
-                "ffprobe",
-                "-v",
-                "error",
-                "-show_entries",
-                "format=duration",
-                "-of",
-                "default=noprint_wrappers=1:nokey=1",
-                str(audio_path),
-            ],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        total_duration = float(duration_probe.stdout.strip())
-        silences = detect_silences(audio_path, noise_db=args.noise_db, min_duration=args.min_duration)
-        selected = select_pause_events(silences, total_duration)
-        rows.extend(build_rows(item, silences, selected, threshold_setting))
-    rows.sort(key=lambda row: (row["recording_id"], row["pause"]))
-    write_rows(args.output, rows)
-    print(f"Wrote {len(rows)} baseline rows to {args.output}")
+        try:
+            audio_path = resolve_audio_path(args.audio_dir, item["recording_id"], item["pianist"])
+            duration_probe = subprocess.run(
+                [
+                    "ffprobe",
+                    "-v",
+                    "error",
+                    "-show_entries",
+                    "format=duration",
+                    "-of",
+                    "default=noprint_wrappers=1:nokey=1",
+                    str(audio_path),
+                ],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+            total_duration = float(duration_probe.stdout.strip())
+            silences = detect_silences(audio_path, noise_db=args.noise_db, min_duration=args.min_duration)
+            selected = select_pause_events(silences, total_duration)
+            item_boundary_rows = build_boundary_rows(item, silences, selected, threshold_setting)
+        except Exception as exc:
+            failures.append(
+                {
+                    "recording_id": item["recording_id"],
+                    "pianist": item["pianist"],
+                    "error": str(exc),
+                }
+            )
+            continue
+        boundary_rows.extend(item_boundary_rows)
+        event_rows.extend(event_rows_from_boundary_rows(item_boundary_rows, condition="source"))
+    event_rows.sort(key=lambda row: (row["recording_id"], row["pause"]))
+    boundary_rows.sort(key=lambda row: (row["recording_id"], row["pause"]))
+    write_rows(args.output, event_rows)
+    write_rows(args.boundaries_output, boundary_rows)
+    args.failures_output.parent.mkdir(parents=True, exist_ok=True)
+    with args.failures_output.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=["recording_id", "pianist", "error"])
+        writer.writeheader()
+        writer.writerows(failures)
+    print(f"Wrote {len(event_rows)} baseline rows to {args.output}")
+    print(f"Wrote {len(boundary_rows)} boundary rows to {args.boundaries_output}")
+    print(f"Wrote {len(failures)} boundary failures to {args.failures_output}")
 
 
 if __name__ == "__main__":

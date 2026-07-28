@@ -74,6 +74,7 @@ def kendall_test(by_pianist: dict[str, dict[str, float]], events: list[str]) -> 
 
 
 def two_sided_binomial_at_least_extreme(successes: int, n_trials: int) -> float:
+    successes = max(successes, n_trials - successes)
     tail = sum(math.comb(n_trials, k) for k in range(successes, n_trials + 1)) / (2**n_trials)
     return min(1.0, 2 * tail)
 
@@ -123,9 +124,11 @@ def main() -> None:
         by_pianist[row["pianist"]][row["pause"]] = float(row["d_l"])
 
     peak_counts = Counter(max(EVENTS, key=lambda event: (event_map[event], event)) for event_map in by_pianist.values())
+    p2_p3_trials = peak_counts.get("P2", 0) + peak_counts.get("P3", 0)
+    p2_p3_successes = max(peak_counts.get("P2", 0), peak_counts.get("P3", 0))
     results = {
         "peak_counts": dict(peak_counts),
-        "modal_peak_binomial_p_two_sided_p2_vs_p3": two_sided_binomial_at_least_extreme(10, 17),
+        "modal_peak_binomial_p_two_sided_p2_vs_p3": two_sided_binomial_at_least_extreme(p2_p3_successes, p2_p3_trials),
         "wilcoxon_p2_minus_p3": wilcoxon_p2_p3(by_pianist),
         "kendall_all_four": kendall_test(by_pianist, EVENTS),
         "kendall_without_p4": kendall_test(by_pianist, ["P1", "P2", "P3"]),
@@ -155,7 +158,7 @@ def main() -> None:
         writer.writerow(
             {
                 "test": "binomial_p2_vs_p3_modal_peak",
-                "statistic": "P2=10; P3=7",
+                "statistic": f"P2={peak_counts.get('P2', 0)}; P3={peak_counts.get('P3', 0)}",
                 "df": "",
                 "p_value": f"{results['modal_peak_binomial_p_two_sided_p2_vs_p3']:.6f}",
                 "note": "two-sided exact binomial, p0=0.5",

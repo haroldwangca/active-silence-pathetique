@@ -59,12 +59,18 @@ function drawTimeline(boundary) {
   context.fillText("low-energy d_l", 150, 108);
 }
 
+function safeWaveformName(pianist, pause) {
+  return `${pianist.replaceAll(" ", "_")}_${pause}.png`;
+}
+
 async function main() {
   const recordingSelect = document.getElementById("recording");
   const pauseSelect = document.getElementById("pause");
   const thresholdSelect = document.getElementById("threshold");
   const audio = document.getElementById("audio");
   const output = document.getElementById("output");
+  const waveform = document.getElementById("waveform");
+  const waveformNote = document.getElementById("waveform-note");
   const events = await readCsv("../data/events.csv");
   const boundaries = await readCsv("../data/pause_boundaries_source.csv").catch(() => []);
   const thresholdRows = await readCsv("../data/threshold_sweep.csv").catch(() => []);
@@ -83,6 +89,7 @@ async function main() {
     const option = document.createElement("option");
     option.value = row.threshold_setting;
     option.textContent = row.threshold_setting;
+    option.selected = row.threshold_setting === "-35dB_0.10s";
     thresholdSelect.appendChild(option);
   });
 
@@ -103,6 +110,20 @@ async function main() {
     } else {
       audio.removeAttribute("src");
       audio.hidden = true;
+    }
+    if (selected) {
+      const waveformPath = `../figures/waveform_panels/${safeWaveformName(selected.pianist, selected.pause)}`;
+      waveform.src = waveformPath;
+      waveform.hidden = false;
+      waveformNote.textContent = `Waveform panel: ${selected.pianist} ${selected.pause}`;
+      waveform.onerror = () => {
+        waveform.hidden = true;
+        waveformNote.textContent = "No waveform panel is bundled for this selection. Regenerate all panels with code/07_waveform_panels.py.";
+      };
+    } else {
+      waveform.removeAttribute("src");
+      waveform.hidden = true;
+      waveformNote.textContent = "No event row is available for this selection.";
     }
     drawTimeline(boundary);
     output.textContent = JSON.stringify(

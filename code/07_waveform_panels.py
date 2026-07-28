@@ -27,9 +27,6 @@ detect_module = load_detect_module()
 load_manifest = detect_module.load_manifest
 resolve_audio_path = detect_module.resolve_audio_path
 
-DEFAULT_RECORDINGS = ["CA", "DB", "MP", "SR", "VH"]
-
-
 def read_rows(path: Path) -> list[dict[str, str]]:
     with path.open("r", newline="", encoding="utf-8") as handle:
         return list(csv.DictReader(handle))
@@ -110,11 +107,15 @@ def main() -> None:
     parser.add_argument("--boundaries", default=Path("data/pause_boundaries_source.csv"), type=Path)
     parser.add_argument("--manifest", default=Path("data/manifest.csv"), type=Path)
     parser.add_argument("--out-dir", default=Path("figures/waveform_panels"), type=Path)
-    parser.add_argument("--recordings", nargs="*", default=DEFAULT_RECORDINGS)
+    parser.add_argument("--recordings", nargs="*", default=None, help="Optional recording IDs; defaults to every boundary row.")
     args = parser.parse_args()
 
     manifest = {row["recording_id"]: row for row in load_manifest(args.manifest)}
-    rows = [row for row in read_rows(args.boundaries) if row["recording_id"] in set(args.recordings)]
+    boundary_rows = read_rows(args.boundaries)
+    if args.recordings:
+        rows = [row for row in boundary_rows if row["recording_id"] in set(args.recordings)]
+    else:
+        rows = boundary_rows
     for row in rows:
         manifest_row = manifest[row["recording_id"]]
         audio_path = resolve_audio_path(args.audio_dir, manifest_row["recording_id"], manifest_row["pianist"])

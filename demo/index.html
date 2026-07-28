@@ -10,6 +10,8 @@
     select, button { font: inherit; padding: 6px 8px; margin-right: 8px; }
     pre { background: #f2e7d8; padding: 12px; border-radius: 8px; overflow-x: auto; }
     canvas { width: 100%; max-width: 780px; height: 120px; background: #fff; border: 1px solid #d6cabd; border-radius: 8px; }
+    img { display: block; max-width: 100%; height: auto; border: 1px solid #d6cabd; border-radius: 8px; background: #fff; }
+    .hint { color: #5c5147; }
   </style>
 </head>
 <body>
@@ -38,6 +40,16 @@
     <h2>Boundary Overlay</h2>
     <p>The blue span is detected sounding time; the red span is low-energy duration. This is metadata-driven and does not redistribute audio.</p>
     <canvas id="timeline" width="780" height="120"></canvas>
+  </div>
+  <div class="card">
+    <h2>Trajectory Figure</h2>
+    <p>The full-corpus trajectory view is generated from the same source-condition event table.</p>
+    <img id="trajectory" src="../figures/figure1_trajectories.png" alt="Active-silence trajectories across the four Grave pauses" />
+  </div>
+  <div class="card">
+    <h2>Waveform Check Panel</h2>
+    <p class="hint" id="waveform-note">Choose a recording and pause to load the matching waveform panel when it is available.</p>
+    <img id="waveform" alt="Waveform validation panel for the selected recording and pause" hidden />
   </div>
   <div class="card">
     <h2>Selected Event</h2>
