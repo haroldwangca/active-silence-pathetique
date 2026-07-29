@@ -137,6 +137,7 @@ async function main() {
       2
     );
   });
+  document.getElementById("show").click();
 }
 
 main().catch((error) => {
@@ -146,7 +147,7 @@ main().catch((error) => {
     "",
     "Serve over HTTP: run python3 -m http.server 8000 from the repo root, then open http://localhost:8000/demo/",
     "",
-    "GitHub does not execute this HTML directly; the demo runs locally (or later via GitHub Pages).",
+    "The public demo is available through GitHub Pages; local viewing requires an HTTP server.",
     "",
     `Technical detail: ${error.message}`
   ].join("\n");
