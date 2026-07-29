@@ -1,6 +1,6 @@
-recording_id,pause,midi_last_note_off_sec,audio_silence_start_sec,audio_minus_midi_release_sec,interpretation,room_tone_sec,room_tone_rms_dbfs,room_tone_peak_dbfs
-HW_GRAVE_DEMO,ROOM_TONE,,,,pre-performance room tone measured before the first MIDI onset,7.181,-53.5,-26.9
-HW_GRAVE_DEMO,P1,10.176,7.836,-2.340,negative means the fixed audio threshold was crossed before the final MIDI note-off,,,
-HW_GRAVE_DEMO,P2,11.685,10.530,-1.155,negative means the fixed audio threshold was crossed before the final MIDI note-off,,,
-HW_GRAVE_DEMO,P3,29.019,28.458,-0.561,negative means the fixed audio threshold was crossed before the final MIDI note-off,,,
-HW_GRAVE_DEMO,P4,36.380,36.037,-0.343,negative means the fixed audio threshold was crossed before the final MIDI note-off,,,
+recording_id,pause,midi_last_note_off_sec,midi_audio_offset_sec,offset_uncertainty_sec,aligned_midi_last_note_off_sec,audio_silence_start_sec,audio_minus_midi_release_sec,interpretation,room_tone_sec,room_tone_rms_dbfs,room_tone_peak_dbfs
+HW_GRAVE_DEMO,ROOM_TONE,,4.358,0.030,,,,pre-performance room tone measured before the aligned first MIDI onset,11.539,-50.1,-16.4
+HW_GRAVE_DEMO,P1,10.176,4.358,0.030,14.534,14.722,0.188,positive values mean the fixed audio threshold crossed after the aligned MIDI note-off,,,
+HW_GRAVE_DEMO,P2,15.377,4.358,0.030,19.735,19.842,0.106,positive values mean the fixed audio threshold crossed after the aligned MIDI note-off,,,
+HW_GRAVE_DEMO,P3,24.044,4.358,0.030,28.402,28.458,0.056,positive values mean the fixed audio threshold crossed after the aligned MIDI note-off,,,
+HW_GRAVE_DEMO,P4,31.573,4.358,0.030,35.931,36.037,0.106,positive values mean the fixed audio threshold crossed after the aligned MIDI note-off,,,

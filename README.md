@@ -42,7 +42,7 @@ Regenerate the demo-only tables and waveform panels with:
 python3 code/09_demo_recording.py --audio "/path/to/Pathetique Grave.m4a" --midi "/path/to/Pathetique Grave.mid"
 ```
 
-The script writes `data/demo_recording_events.csv`, `data/demo_recording_boundaries.csv`, `data/demo_recording_midi_release.csv`, `data/demo_recording_manifest.csv`, and four `Harold_Wang_P*.png` waveform panels. `data/demo_recording_midi_release.csv` compares the final MIDI note-off in each selected pause window with the audio threshold crossing; negative values indicate that the fixed audio threshold was crossed before the final MIDI note-off, which is a useful construct check rather than a corpus result.
+The script writes `data/demo_recording_events.csv`, `data/demo_recording_boundaries.csv`, `data/demo_recording_midi_release.csv`, `data/demo_recording_manifest.csv`, and four `Harold_Wang_P*.png` waveform panels. `data/demo_recording_manifest.csv` declares the measured audio-minus-MIDI offset (`4.358 s`, approximate uncertainty `0.030 s`) rather than trimming or rewriting the original files. `data/demo_recording_midi_release.csv` compares the final aligned MIDI note-off before each selected threshold crossing with the audio threshold crossing; positive values indicate that the fixed audio threshold crossed after the key release. These rows are a construct check, not a corpus result.
 
 ## Data Dictionary: `data/events.csv`
 

@@ -1,5 +1,5 @@
 recording_id,pianist,pause,d_s,d_l,T,condition,threshold_setting
-HW_GRAVE_DEMO,Harold Wang,P1,0.656,2.414,3.069,demo_recording,-35dB_0.10s
-HW_GRAVE_DEMO,Harold Wang,P2,0.280,1.009,1.290,demo_recording,-35dB_0.10s
-HW_GRAVE_DEMO,Harold Wang,P3,16.919,0.847,17.766,demo_recording,-35dB_0.10s
+HW_GRAVE_DEMO,Harold Wang,P1,3.184,0.380,3.563,demo_recording,-35dB_0.10s
+HW_GRAVE_DEMO,Harold Wang,P2,4.740,1.100,5.840,demo_recording,-35dB_0.10s
+HW_GRAVE_DEMO,Harold Wang,P3,7.517,0.847,8.364,demo_recording,-35dB_0.10s
 HW_GRAVE_DEMO,Harold Wang,P4,6.732,0.297,7.029,demo_recording,-35dB_0.10s

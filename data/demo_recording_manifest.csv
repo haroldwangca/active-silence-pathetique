@@ -1,2 +1,2 @@
-recording_id,pianist,audio_file,midi_file,audio_format,duration_sec,first_midi_onset_sec,status,notes
-HW_GRAVE_DEMO,Harold Wang,media/harold_grave.m4a,media/harold_grave.mid,"M4A/AAC, 48 kHz mono",100.672,7.181,author-owned demo recording; excluded from corpus statistics,Used for hosted playback and MIDI/audio boundary illustration only.
+recording_id,pianist,audio_file,midi_file,audio_format,duration_sec,first_midi_onset_sec,midi_audio_offset_sec,offset_uncertainty_sec,first_audio_onset_sec,offset_method,status,notes
+HW_GRAVE_DEMO,Harold Wang,media/harold_grave.m4a,media/harold_grave.mid,"M4A/AAC, 48 kHz mono",100.672,7.181,4.358,0.030,11.539,manual onset matching; MIDI 7.181s -> audio 11.539s and MIDI 10.727s -> audio 15.102s,author-owned demo recording; excluded from corpus statistics,Used for hosted playback and MIDI/audio boundary illustration only.

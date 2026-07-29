@@ -155,14 +155,14 @@ def probe_duration(path: Path) -> float:
 
 def select_demo_pauses(
     silences: list[SilenceInterval],
-    first_midi_onset: float,
+    first_audio_onset: float,
     total_duration: float,
 ) -> dict[str, SilenceInterval]:
     analysis_limit = min(max(50.0, total_duration * 0.18), 90.0)
     candidates = [
         silence
         for silence in silences
-        if silence.start >= first_midi_onset - 0.25
+        if silence.start >= first_audio_onset - 0.25
         and silence.end <= analysis_limit
         and silence.duration >= 0.10
     ]
@@ -261,15 +261,31 @@ def main() -> None:
     parser.add_argument("--midi-output", default=Path("data/demo_recording_midi_release.csv"), type=Path)
     parser.add_argument("--manifest-output", default=Path("data/demo_recording_manifest.csv"), type=Path)
     parser.add_argument("--waveform-dir", default=Path("figures/waveform_panels"), type=Path)
+    parser.add_argument(
+        "--midi-audio-offset-sec",
+        default=4.358,
+        type=float,
+        help="Constant audio-minus-MIDI offset. The original files are not trimmed.",
+    )
+    parser.add_argument(
+        "--offset-uncertainty-sec",
+        default=0.030,
+        type=float,
+        help="Approximate uncertainty from two manually matched onset pairs.",
+    )
     parser.add_argument("--noise-db", default=-35, type=int)
     parser.add_argument("--min-duration", default=0.10, type=float)
     args = parser.parse_args()
 
     onsets, offsets = parse_midi_note_times(args.midi)
     first_midi_onset = onsets[0]
+    midi_audio_offset = args.midi_audio_offset_sec
+    offset_uncertainty = args.offset_uncertainty_sec
+    first_audio_onset = first_midi_onset + midi_audio_offset
+    aligned_offsets = [value + midi_audio_offset for value in offsets]
     total_duration = probe_duration(args.audio)
     silences = detect_silences(args.audio, noise_db=args.noise_db, min_duration=args.min_duration)
-    selected = select_demo_pauses(silences, first_midi_onset, total_duration)
+    selected = select_demo_pauses(silences, first_audio_onset, total_duration)
     threshold_setting = f"{args.noise_db}dB_{args.min_duration:.2f}s"
 
     manifest_row = {
@@ -281,10 +297,10 @@ def main() -> None:
     boundary_rows: list[dict[str, str]] = []
     event_rows: list[dict[str, str]] = []
     midi_rows: list[dict[str, str]] = []
-    previous_end = first_midi_onset
+    previous_end = first_audio_onset
     for pause in ["P1", "P2", "P3", "P4"]:
         silence = selected[pause]
-        event_start = max(first_midi_onset, previous_end)
+        event_start = max(first_audio_onset, previous_end)
         d_s = max(0.0, silence.start - event_start)
         boundary_row = {
             "recording_id": manifest_row["recording_id"],
@@ -311,17 +327,26 @@ def main() -> None:
                 "threshold_setting": threshold_setting,
             }
         )
-        local_offsets = [value for value in offsets if event_start <= value <= silence.end + 0.25]
-        release = max(local_offsets) if local_offsets else ""
+        local_offsets = [
+            (raw, aligned)
+            for raw, aligned in zip(offsets, aligned_offsets)
+            if event_start <= aligned <= silence.start
+        ]
+        release_pair = max(local_offsets, key=lambda pair: pair[1]) if local_offsets else None
+        raw_release = release_pair[0] if release_pair else ""
+        aligned_release = release_pair[1] if release_pair else ""
         midi_rows.append(
             {
                 "recording_id": manifest_row["recording_id"],
                 "pause": pause,
-                "midi_last_note_off_sec": f"{release:.3f}" if release != "" else "",
+                "midi_last_note_off_sec": f"{raw_release:.3f}" if raw_release != "" else "",
+                "midi_audio_offset_sec": f"{midi_audio_offset:.3f}",
+                "offset_uncertainty_sec": f"{offset_uncertainty:.3f}",
+                "aligned_midi_last_note_off_sec": f"{aligned_release:.3f}" if aligned_release != "" else "",
                 "audio_silence_start_sec": f"{silence.start:.3f}",
-                "audio_minus_midi_release_sec": f"{silence.start - release:.3f}" if release != "" else "",
-                "interpretation": "negative means the fixed audio threshold was crossed before the final MIDI note-off"
-                if release != ""
+                "audio_minus_midi_release_sec": f"{silence.start - aligned_release:.3f}" if aligned_release != "" else "",
+                "interpretation": "positive values mean the fixed audio threshold crossed after the aligned MIDI note-off"
+                if aligned_release != ""
                 else "no MIDI note-off found in local event window",
             }
         )
@@ -331,14 +356,17 @@ def main() -> None:
         "recording_id": manifest_row["recording_id"],
         "pause": "ROOM_TONE",
         "midi_last_note_off_sec": "",
+        "midi_audio_offset_sec": f"{midi_audio_offset:.3f}",
+        "offset_uncertainty_sec": f"{offset_uncertainty:.3f}",
+        "aligned_midi_last_note_off_sec": "",
         "audio_silence_start_sec": "",
         "audio_minus_midi_release_sec": "",
-        "interpretation": "pre-performance room tone measured before the first MIDI onset",
+        "interpretation": "pre-performance room tone measured before the aligned first MIDI onset",
     }
     temp_dir = Path("tmp")
     temp_dir.mkdir(exist_ok=True)
     temp_wav = temp_dir / "harold_grave_demo_11025.wav"
-    room_row.update(room_tone_stats(args.audio, first_midi_onset, temp_wav))
+    room_row.update(room_tone_stats(args.audio, first_audio_onset, temp_wav))
     midi_rows.insert(0, room_row)
 
     write_csv(args.events_output, event_rows)
@@ -355,6 +383,10 @@ def main() -> None:
                 "audio_format": "M4A/AAC, 48 kHz mono",
                 "duration_sec": f"{total_duration:.3f}",
                 "first_midi_onset_sec": f"{first_midi_onset:.3f}",
+                "midi_audio_offset_sec": f"{midi_audio_offset:.3f}",
+                "offset_uncertainty_sec": f"{offset_uncertainty:.3f}",
+                "first_audio_onset_sec": f"{first_audio_onset:.3f}",
+                "offset_method": "manual onset matching; MIDI 7.181s -> audio 11.539s and MIDI 10.727s -> audio 15.102s",
                 "status": "author-owned demo recording; excluded from corpus statistics",
                 "notes": "Used for hosted playback and MIDI/audio boundary illustration only.",
             }

@@ -11,6 +11,6 @@ To use copyrighted professional recordings locally:
 3. From the repository root, run `python3 -m http.server 8000`.
 4. Open `http://localhost:8000/demo/`.
 
-The viewer reads corpus metadata from `../data/events.csv` and `../data/pause_boundaries_source.csv`, demo metadata from `../data/demo_recording_events.csv` and `../data/demo_recording_boundaries.csv`, MIDI/audio comparison rows from `../data/demo_recording_midi_release.csv`, aggregate detector-sensitivity metadata from `../data/threshold_sweep.csv`, and images from `../figures/`. The browser audio element is pointed to the selected event span using a media-fragment URL.
+The viewer reads corpus metadata from `../data/events.csv` and `../data/pause_boundaries_source.csv`, demo metadata from `../data/demo_recording_events.csv` and `../data/demo_recording_boundaries.csv`, MIDI/audio comparison rows from `../data/demo_recording_midi_release.csv`, aggregate detector-sensitivity metadata from `../data/threshold_sweep.csv`, and images from `../figures/`. The demo-recording manifest declares a measured audio-minus-MIDI offset of `4.358 s`; MIDI release times are aligned by that offset before comparison with audio threshold crossings. The browser audio element is pointed to the selected event span using a media-fragment URL.
 
 The public version is served through GitHub Pages. Professional recording playback should remain local-only; do not commit commercial audio or local path mappings.
