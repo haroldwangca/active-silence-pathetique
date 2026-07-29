@@ -1,0 +1,2 @@
+recording_id,pianist,audio_file,midi_file,audio_format,duration_sec,first_midi_onset_sec,status,notes
+HW_GRAVE_DEMO,Harold Wang,media/harold_grave.m4a,media/harold_grave.mid,"M4A/AAC, 48 kHz mono",100.672,7.181,author-owned demo recording; excluded from corpus statistics,Used for hosted playback and MIDI/audio boundary illustration only.

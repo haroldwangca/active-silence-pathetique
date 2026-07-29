@@ -17,7 +17,7 @@
 <body>
   <h1>Active Silence Viewer</h1>
   <div class="card">
-    <p>This viewer reads the derived event table, detector-boundary metadata, threshold summary, and optional local audio mappings. The source recordings are copyrighted, so the site distributes descriptors and boundary metadata only; playback appears only when a local <code>audio_paths.json</code> file is configured. Source code and data tables are available in the <a href="https://github.com/haroldwangca/active-silence-pathetique">GitHub repository</a>.</p>
+    <p>This viewer reads the derived event table, detector-boundary metadata, threshold summary, and an author-owned demo recording. The professional source recordings are copyrighted, so the site distributes descriptors and boundary metadata only for those recordings; playback is enabled only for the author-owned Grave take or when a local <code>audio_paths.json</code> file is configured. Source code and data tables are available in the <a href="https://github.com/haroldwangca/active-silence-pathetique">GitHub repository</a>.</p>
     <label for="recording">Recording</label>
     <select id="recording"></select>
     <label for="pause">Pause</label>
@@ -32,9 +32,14 @@
     <button id="show">Show Event</button>
   </div>
   <div class="card">
-    <h2>Optional Local Playback</h2>
-    <p>Playback appears only when <code>audio_paths.json</code> points to local audio. The URL fragment is set to the selected event span when boundary metadata is available.</p>
+    <h2>Playback</h2>
+    <p>The author-owned demo recording can play in the browser. Professional recordings remain external; local playback appears for them only when <code>audio_paths.json</code> points to local audio. The URL fragment is set to the selected event span when boundary metadata is available.</p>
     <audio id="audio" controls hidden></audio>
+  </div>
+  <div class="card">
+    <h2>MIDI/Audio Release Check</h2>
+    <p class="hint">For the author-owned recording only, this compares the final MIDI note-off in the selected event window with the audio threshold crossing.</p>
+    <pre id="release-output">Waiting for selection...</pre>
   </div>
   <div class="card">
     <h2>Boundary Overlay</h2>

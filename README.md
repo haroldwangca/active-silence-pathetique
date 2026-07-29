@@ -8,7 +8,7 @@ Figure generation requires `Pillow>=11.0,<12`.
 
 ## Included Materials
 
-No audio files are included. The WAVs linked through ATEPP are copyrighted commercial recordings, so this repository ships code, extracted features, figures, and provenance metadata. To rebuild the results, use `data/manifest.csv` with the documented ATEPP and YouTube links, then place the audio in one local directory. The shipped detector-derived tables were regenerated from a single verified PCM directory so that `events.csv` and `pause_boundaries_source.csv` use the same measured boundaries.
+The copyrighted ATEPP-linked source recordings are not included. For those recordings, this repository ships code, extracted features, figures, and provenance metadata only. One author-owned Grave recording is included under `media/` so that the public demo and camera-ready video can show synchronized playback without redistributing commercial audio. To rebuild the corpus results, use `data/manifest.csv` with the documented ATEPP and YouTube links, then place the audio in one local directory. The shipped detector-derived tables were regenerated from a single verified PCM directory so that `events.csv` and `pause_boundaries_source.csv` use the same measured boundaries.
 
 ## Fast Reproduction Without Audio
 
@@ -31,6 +31,18 @@ export AS_AUDIO_DIR="/absolute/path/to/local/audio"
 python3 code/01_detect.py --audio-dir "$AS_AUDIO_DIR" && python3 code/02_normalize_rerun.py --audio-dir "$AS_AUDIO_DIR" && python3 code/05_boundaries.py --audio-dir "$AS_AUDIO_DIR" && python3 code/06_threshold_sweep.py --audio-dir "$AS_AUDIO_DIR" && python3 code/03_analysis.py && python3 code/04_figures.py && python3 code/05_significance.py
 python3 code/07_waveform_panels.py --audio-dir "$AS_AUDIO_DIR"
 ```
+
+## Author-Owned Demo Recording
+
+`media/harold_grave.m4a` and `media/harold_grave.mid` contain an author-owned performance of the Grave introduction. This recording is not part of the 16-performance corpus and is not included in Table 1 or the reported statistics. It is used only as a hosted playback example and as a MIDI/audio boundary illustration for the demo video.
+
+Regenerate the demo-only tables and waveform panels with:
+
+```bash
+python3 code/09_demo_recording.py --audio "/path/to/Pathetique Grave.m4a" --midi "/path/to/Pathetique Grave.mid"
+```
+
+The script writes `data/demo_recording_events.csv`, `data/demo_recording_boundaries.csv`, `data/demo_recording_midi_release.csv`, `data/demo_recording_manifest.csv`, and four `Harold_Wang_P*.png` waveform panels. `data/demo_recording_midi_release.csv` compares the final MIDI note-off in each selected pause window with the audio threshold crossing; negative values indicate that the fixed audio threshold was crossed before the final MIDI note-off, which is a useful construct check rather than a corpus result.
 
 ## Data Dictionary: `data/events.csv`
 

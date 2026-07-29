@@ -1,0 +1,6 @@
+recording_id,pause,midi_last_note_off_sec,audio_silence_start_sec,audio_minus_midi_release_sec,interpretation,room_tone_sec,room_tone_rms_dbfs,room_tone_peak_dbfs
+HW_GRAVE_DEMO,ROOM_TONE,,,,pre-performance room tone measured before the first MIDI onset,7.181,-53.5,-26.9
+HW_GRAVE_DEMO,P1,10.176,7.836,-2.340,negative means the fixed audio threshold was crossed before the final MIDI note-off,,,
+HW_GRAVE_DEMO,P2,11.685,10.530,-1.155,negative means the fixed audio threshold was crossed before the final MIDI note-off,,,
+HW_GRAVE_DEMO,P3,29.019,28.458,-0.561,negative means the fixed audio threshold was crossed before the final MIDI note-off,,,
+HW_GRAVE_DEMO,P4,36.380,36.037,-0.343,negative means the fixed audio threshold was crossed before the final MIDI note-off,,,

@@ -6,6 +6,8 @@
 *.aiff
 audio/
 local_audio/
+!media/
+!media/harold_grave.m4a
 
 # OS / editor junk
 .DS_Store
