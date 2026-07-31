@@ -1,5 +1,9 @@
 # Active Silence in Beethoven: Low-Energy Pause Strategies
 
+**Live demo:** https://haroldwangca.github.io/active-silence-pathetique/demo/
+
+Extended abstract submitted to the ISMIR 2026 Late-Breaking Demo session (non-archival).
+
 This repository contains the materials behind **"Active Silence in Beethoven: Low-Energy Pause Strategies in the Grave of the Pathetique,"** a late-breaking demo paper prepared for **ISMIR LBD 2026**. It includes the analysis code, extracted timing tables, figures, and the source manifest for the study set verified on July 21, 2026.
 
 The CSV files in `data/` are the verified outputs used in the current draft. If you rerun the detector on newly downloaded audio, or under a different `ffmpeg` build, a few pause boundaries may land slightly differently.
@@ -77,5 +81,9 @@ Quality-control note: an all-pairs screen on detected onset positions flagged ex
 ## How To Cite
 
 Harold Wang, *Active Silence in Beethoven: Low-Energy Pause Strategies in the Grave of the Pathetique*, prepared for submission to ISMIR LBD 2026.
+
+Repository: https://github.com/haroldwangca/active-silence-pathetique
+
+Demo: https://haroldwangca.github.io/active-silence-pathetique/demo/
 
 Contact: haroldw101313@wpga.ca

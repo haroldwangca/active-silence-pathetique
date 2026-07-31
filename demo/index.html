@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Active Silence Viewer</title>
+  <title>Active Silence Viewer - Beethoven Op. 13/I (Pathetique) · ISMIR 2026 LBD</title>
   <style>
     body { font-family: Georgia, serif; margin: 32px; background: #f6f1e8; color: #181512; }
     .card { background: #fffaf3; border: 1px solid #d6cabd; border-radius: 14px; padding: 18px; margin: 18px 0; }
@@ -17,6 +17,16 @@
 <body>
   <h1>Active Silence Viewer</h1>
   <div class="card">
+    <p class="lede">
+      An inspection interface for four notated pauses in the <strong>Grave</strong> of
+      <strong>Beethoven's Piano Sonata No. 8 in C minor, Op. 13 (Pathetique)</strong>,
+      measured across 16 professional recordings with an energy-threshold detector.
+      The study found <strong>no reliable difference</strong> between the second and third
+      pauses; detector error from file level alone exceeds the effect being measured.
+      Companion demo to an extended abstract submitted to the
+      <strong>ISMIR 2026 Late-Breaking Demo</strong> session (non-archival).
+      <a href="https://github.com/haroldwangca/active-silence-pathetique">Source code and data tables</a>.
+    </p>
     <p>This viewer reads the derived event table, detector-boundary metadata, threshold summary, and an author-owned demo recording. The professional source recordings are copyrighted, so the site distributes descriptors and boundary metadata only for those recordings; playback is enabled only for the author-owned Grave take or when a local <code>audio_paths.json</code> file is configured. Source code and data tables are available in the <a href="https://github.com/haroldwangca/active-silence-pathetique">GitHub repository</a>.</p>
     <label for="recording">Recording</label>
     <select id="recording"></select>
