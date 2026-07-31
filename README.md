@@ -2,9 +2,11 @@
 
 **Live demo:** https://haroldwangca.github.io/active-silence-pathetique/demo/
 
+**Demo video (5 min, captioned):** https://haroldwangca.github.io/active-silence-pathetique/media/demo_video.mp4
+
 Extended abstract submitted to the ISMIR 2026 Late-Breaking Demo session (non-archival).
 
-This repository contains the materials behind **"Active Silence in Beethoven: Low-Energy Pause Strategies in the Grave of the Pathetique,"** a late-breaking demo paper prepared for **ISMIR LBD 2026**. It includes the analysis code, extracted timing tables, figures, and the source manifest for the study set verified on July 21, 2026.
+This repository contains the materials behind **"Active Silence in Beethoven: Low-Energy Pause Strategies in the Grave of the Pathétique,"** a late-breaking demo paper prepared for **ISMIR LBD 2026**. It includes the analysis code, extracted timing tables, figures, and the source manifest for the study set verified on July 21, 2026.
 
 The CSV files in `data/` are the verified outputs used in the current draft. If you rerun the detector on newly downloaded audio, or under a different `ffmpeg` build, a few pause boundaries may land slightly differently.
 
@@ -43,7 +45,7 @@ python3 code/07_waveform_panels.py --audio-dir "$AS_AUDIO_DIR"
 Regenerate the demo-only tables and waveform panels with:
 
 ```bash
-python3 code/09_demo_recording.py --audio "/path/to/Pathetique Grave.m4a" --midi "/path/to/Pathetique Grave.mid"
+python3 code/09_demo_recording.py --audio "/path/to/grave_audio.m4a" --midi "/path/to/grave_midi.mid"
 ```
 
 The script writes `data/demo_recording_events.csv`, `data/demo_recording_boundaries.csv`, `data/demo_recording_midi_release.csv`, `data/demo_recording_manifest.csv`, and four `Harold_Wang_P*.png` waveform panels. `data/demo_recording_manifest.csv` declares the measured audio-minus-MIDI offset (`4.358 s`, approximate uncertainty `0.030 s`) rather than trimming or rewriting the original files. `data/demo_recording_midi_release.csv` compares the final aligned MIDI note-off before each selected threshold crossing with the audio threshold crossing; positive values indicate that the fixed audio threshold crossed after the key release. These rows are a construct check, not a corpus result.
@@ -80,7 +82,7 @@ Quality-control note: an all-pairs screen on detected onset positions flagged ex
 
 ## How To Cite
 
-Harold Wang, *Active Silence in Beethoven: Low-Energy Pause Strategies in the Grave of the Pathetique*, prepared for submission to ISMIR LBD 2026.
+Harold Wang, *Active Silence in Beethoven: Low-Energy Pause Strategies in the Grave of the Pathétique*, prepared for submission to ISMIR LBD 2026.
 
 Repository: https://github.com/haroldwangca/active-silence-pathetique
 

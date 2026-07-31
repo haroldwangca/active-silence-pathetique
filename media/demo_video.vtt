@@ -1,0 +1,238 @@
+WEBVTT
+
+00:00:03.000 --> 00:00:05.170
+A written rest tells a pianist to stop,
+
+00:00:05.310 --> 00:00:06.930
+but it doesn't tell them for how long.
+
+00:00:07.250 --> 00:00:10.070
+This demo measures what an energy-based detector
+
+00:00:10.070 --> 00:00:11.970
+finds inside the Grave opening
+
+00:00:11.970 --> 00:00:14.390
+of the Pathétique Sonata and how far that
+
+00:00:14.390 --> 00:00:16.930
+measurement sits from what the performer actually did.
+
+00:00:17.360 --> 00:00:23.360
+[the author's recording plays]
+
+00:00:23.830 --> 00:00:25.310
+Each pause is split into two spans.
+
+00:00:25.490 --> 00:00:27.710
+The blue span, d_s, is the sounding time
+
+00:00:27.710 --> 00:00:30.470
+before the detector's threshold is crossed, and the
+
+00:00:30.470 --> 00:00:32.950
+red span, d_l, is how long the signal
+
+00:00:32.950 --> 00:00:34.250
+stays below that threshold.
+
+00:00:34.490 --> 00:00:38.130
+For the pause you just heard, d_l is 0.380 seconds.
+
+00:00:38.470 --> 00:00:40.810
+Both are detector outputs, and neither is a
+
+00:00:40.810 --> 00:00:42.370
+measurement of musical intention.
+
+00:00:42.450 --> 00:00:46.420
+My hypothesis here was that the second pause
+
+00:00:46.420 --> 00:00:48.140
+is systematically the longest one.
+
+00:00:48.380 --> 00:00:52.720
+Across 16 professional recordings, that idea was not supported.
+
+00:00:53.040 --> 00:00:55.840
+Actually, the longest pause falls on P2 in
+
+00:00:55.840 --> 00:00:58.400
+9 of the recordings and P3 in 7
+
+00:00:58.400 --> 00:01:00.460
+of them, which is a two-sided binomial
+
+00:01:00.460 --> 00:01:07.720
+p-value of 0.80. The paired P2–P3 value, the difference between them, is
+
+00:01:07.720 --> 00:01:15.438
+minus 0.49 seconds, with a 95% confidence interval from minus 1.42 to plus 0.43.
+
+00:01:15.438 --> 00:01:18.180
+Of course, this contains zero, so
+
+00:01:18.180 --> 00:01:20.640
+it's not a statistically significant result.
+
+00:01:21.800 --> 00:01:24.460
+Across all four pauses, the ordering is moderate,
+
+00:01:24.780 --> 00:01:27.900
+with a Kendall's W of 0.46. Removing
+
+00:01:27.900 --> 00:01:31.983
+pause 4, and the Kendall's value drops to 0.14,
+
+00:01:31.983 --> 00:01:37.200
+so the ordering is closest to the single statement that the final pause is
+
+00:01:37.200 --> 00:01:41.830
+the shortest. The null matters because the detector uses an
+
+00:01:41.830 --> 00:01:46.430
+absolute decibel threshold, which makes it sensitive to how loud the file actually is.
+
+00:01:47.110 --> 00:01:49.730
+If you normalize all 16 files to minus
+
+00:01:49.730 --> 00:01:54.590
+1 dBFS, it moves the within-recording P2
+
+00:01:54.590 --> 00:01:57.450
+–P3 difference by about 0.25 seconds
+
+00:01:57.450 --> 00:02:01.210
+on average, and by 3.62 seconds in one recording.
+
+00:02:01.450 --> 00:02:04.149
+The effect I was measuring is 0.49 seconds.
+
+00:02:04.630 --> 00:02:06.950
+At this precision level, a claim about which
+
+00:02:06.950 --> 00:02:09.790
+middle pause is longer is also a claim
+
+00:02:09.790 --> 00:02:12.670
+about file level and mastering, so this control
+
+00:02:12.670 --> 00:02:15.770
+reports aggregate metadata only, and it does
+
+00:02:15.770 --> 00:02:19.170
+not rerun the selected event or let me
+
+00:02:19.170 --> 00:02:20.770
+pick a more favorable setting.
+
+00:02:20.850 --> 00:02:25.830
+Everything so far rests on one unmeasured assumption.
+
+00:02:26.310 --> 00:02:28.450
+That is, where the energy falls below the
+
+00:02:28.450 --> 00:02:30.730
+threshold is where the pianist stopped.
+
+00:02:31.130 --> 00:02:33.730
+On a piano, it can't always be like
+
+00:02:33.730 --> 00:02:37.450
+this because the strings do keep ringing after the key gets released.
+
+00:02:37.530 --> 00:02:41.640
+So what I did is I recorded the
+
+00:02:41.640 --> 00:02:47.280
+opening myself, and I captured both audio and MIDI data.
+
+00:02:47.520 --> 00:02:49.420
+The MIDI note-off is the moment my
+
+00:02:49.420 --> 00:02:51.840
+finger left the key, and the detector boundary
+
+00:02:51.840 --> 00:02:54.200
+is what the audio algorithm reports here.
+
+00:02:54.280 --> 00:02:58.700
+And the difference is the error I couldn't
+
+00:02:58.700 --> 00:03:00.180
+see in the commercial recordings.
+
+00:03:00.380 --> 00:03:07.680
+Across the four pauses, the boundary lands between 0.056 and 0.188 seconds after
+
+00:03:07.680 --> 00:03:11.060
+the aligned note-off, which is about 0.11 seconds.
+
+00:03:11.140 --> 00:03:16.290
+It's late in every single pause, so consistently
+
+00:03:16.290 --> 00:03:19.330
+that's what the damped string decay is predicting.
+
+00:03:19.330 --> 00:03:25.210
+Although there are two caveats, the first is this is just a performance by one pianist,
+
+00:03:25.450 --> 00:03:27.310
+and it's of course excluded from all the
+
+00:03:27.310 --> 00:03:28.870
+figures and the statistics.
+
+00:03:29.610 --> 00:03:32.390
+The second thing is that the two files
+
+00:03:32.390 --> 00:03:34.410
+weren't started on the same clock, so the
+
+00:03:34.410 --> 00:03:41.790
+pipeline actually declares a constant offset of about 4.358 seconds with about 30 milliseconds of uncertainty.
+
+00:03:42.290 --> 00:03:45.910
+That is the noise floor on a 0.11 second measurement.
+
+00:03:45.990 --> 00:03:53.210
+Overall, the statistics and figures regenerate from the
+
+00:03:53.210 --> 00:03:56.530
+shipped CSVs with no audio, and regenerating the
+
+00:03:56.530 --> 00:03:58.870
+event table, the boundary table, or the waveform
+
+00:03:58.870 --> 00:04:01.570
+panels, you do need to download your own
+
+00:04:01.570 --> 00:04:05.630
+local copy, because the corpus recordings are commercial
+
+00:04:05.630 --> 00:04:08.070
+and cannot be redistributed freely.
+
+00:04:08.350 --> 00:04:13.710
+The one playable file in my demo is of course my own performance.
+
+00:04:14.260 --> 00:04:24.860
+[the author's recording plays]
+
+00:04:25.270 --> 00:04:28.660
+Overall, the contribution is a small reproducible inspection
+
+00:04:28.660 --> 00:04:34.720
+interface for active silence, and also one measured estimate of how far an energy threshold
+
+00:04:34.720 --> 00:04:36.320
+sits from a real key release.
+
+00:04:36.520 --> 00:04:41.960
+A next step could possibly be replacing order-selected event recovery with a score alignment process,
+
+00:04:41.960 --> 00:04:44.380
+so the pauses are located by the score
+
+00:04:44.380 --> 00:04:46.320
+instead of by their position in time.
